@@ -20,6 +20,14 @@ public class Review {
         this.rating = rating;
         this.review = review;
     }
+
+    public Review(Long courseId, Long studentId, Double rating, String review) {
+        this.courseId = courseId;
+        this.studentId = studentId;
+        this.rating = rating;
+        this.review = review;
+    }
+
     public Review() {}
 
     public Long getId() {
