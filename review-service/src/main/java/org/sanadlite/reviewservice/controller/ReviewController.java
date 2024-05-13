@@ -15,6 +15,16 @@ import java.io.StringWriter;
 public class ReviewController {
     @Inject
     private ReviewService reviewService;
+
+    /**
+     * Create a review
+     *
+     * @param courseId course id
+     * @param studentId student id
+     * @param rating rating
+     * @param review review
+     * @return created review
+     */
     @POST
     @Produces("application/json")
     public Response createReview(@QueryParam("course_id") Long courseId,
@@ -38,6 +48,12 @@ public class ReviewController {
         }
     }
 
+    /**
+     * Get reviews by course id
+     *
+     * @param courseId course id
+     * @return list of reviews for the given course id
+     */
     @GET
     @Produces("application/json")
     public Response getReviewsByCourseId(@QueryParam("course_id") Long courseId) {
@@ -56,6 +72,12 @@ public class ReviewController {
         }
     }
 
+    /**
+     * Delete reviews for a given course id
+     *
+     * @param courseId course id
+     * @return No Content if successful, Not Found if course id is not found, or Internal Server Error
+     */
     @DELETE
     @Produces("application/json")
     public Response deleteReviewByCourseId(@QueryParam("course_id") Long courseId){
