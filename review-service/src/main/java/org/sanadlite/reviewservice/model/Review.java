@@ -2,6 +2,13 @@ package org.sanadlite.reviewservice.model;
 
 import jakarta.persistence.*;
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Review.getReviewsByCourseId",
+                query = "SELECT r FROM Review r WHERE r.courseId = :courseId"),
+        @NamedQuery(name = "Review.deleteReviewByCourseId",
+                query = "DELETE FROM Review r WHERE r.courseId = :courseId"),
+
+})
 public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "review_id_seq")

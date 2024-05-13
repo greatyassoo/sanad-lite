@@ -37,4 +37,42 @@ public class ReviewController {
                     .build();
         }
     }
+
+    @GET
+    @Produces("application/json")
+    public Response getReviewsByCourseId(@QueryParam("course_id") Long courseId) {
+        try {
+            return Response.status(Response.Status.OK)
+                    .entity(reviewService.getReviewsByCourseId(courseId))
+                    .build();
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            String exceptionAsString = sw.toString();
+
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exceptionAsString)
+                    .build();
+        }
+    }
+
+    @DELETE
+    @Produces("application/json")
+    public Response deleteReviewByCourseId(@QueryParam("course_id") Long courseId){
+        try {
+            if (reviewService.deleteReviewByCourseId(courseId))
+                return Response.status(Response.Status.NO_CONTENT).build();
+            else
+                return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        catch (Exception e){
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            String exceptionAsString = sw.toString();
+
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(exceptionAsString)
+                    .build();
+        }
+    }
 }
