@@ -3,6 +3,9 @@ package com.sanadlite.courseservice.controller;
 import com.sanadlite.courseservice.dto.request.CourseReqDto;
 import com.sanadlite.courseservice.dto.request.CourseUpdateReqDto;
 import com.sanadlite.courseservice.dto.response.CourseResDto;
+import com.sanadlite.courseservice.feign.reviewservice.dto.ReviewRequestDto;
+import com.sanadlite.courseservice.feign.reviewservice.dto.ReviewResponseDto;
+import com.sanadlite.courseservice.feign.reviewservice.ReviewInterface;
 import com.sanadlite.courseservice.model.Course;
 import com.sanadlite.courseservice.service.CourseService;
 import lombok.AllArgsConstructor;
@@ -16,7 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 @Log
@@ -26,6 +29,8 @@ import java.util.Optional;
 @RequestMapping("/api/v1/courses")
 public class CourseController {
     private final CourseService courseService;
+
+    private final ReviewInterface reviewInterface;
 
     @GetMapping()
     public ResponseEntity<Page<Course>> getAllCourses(
@@ -66,6 +71,12 @@ public class CourseController {
         Course course = courseService.updateCourse(id,courseUpdateReqDto);
         if(course != null) return ResponseEntity.ok().body(course);
         else return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("{courseId}/reviews")
+    public ResponseEntity<List<ReviewResponseDto>> getReviewsByCourseId(@PathVariable(name = "courseId") Long courseId) {
+        return reviewInterface.getReviewsByCourseId(courseId);
+
     }
 
 }
