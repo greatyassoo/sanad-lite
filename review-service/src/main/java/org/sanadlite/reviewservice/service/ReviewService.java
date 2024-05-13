@@ -15,7 +15,7 @@ public class ReviewService {
     @Inject
     private EntityManager entityManager;
 
-    public void createReview(ReviewRequestDto reviewRequestDto) {
+    public Review createReview(ReviewRequestDto reviewRequestDto) {
         Review review = new Review(
                 reviewRequestDto.getCourseId(),
                 reviewRequestDto.getStudentId(),
@@ -29,6 +29,7 @@ public class ReviewService {
             transaction.begin();
             entityManager.persist(review);
             transaction.commit();
+            return review;
         } catch (Exception e) {
             transaction.rollback();
             throw e;

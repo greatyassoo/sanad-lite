@@ -27,9 +27,9 @@ public class ReviewController {
     public Response createReview(ReviewRequestDto reviewRequestDto) {
 
         try {
-            reviewService.createReview(reviewRequestDto);
+            Review review = reviewService.createReview(reviewRequestDto);
             return Response.status(Response.Status.CREATED)
-                    .entity(reviewRequestDto)
+                    .entity(review)
                     .build();
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
@@ -92,18 +92,4 @@ public class ReviewController {
         }
     }
 
-
-    @GET
-    @Path("/test")
-    @Produces("application/json")
-    public Response test(@QueryParam("courseId") Long courseId) {
-        if(courseId % 2 != 0) {
-            return Response.status(Response.Status.CREATED)
-                    .entity("course_id must be even")
-                    .build();
-        }
-        return Response.status(Response.Status.OK)
-                .entity("ok")
-                .build();
-    }
 }
