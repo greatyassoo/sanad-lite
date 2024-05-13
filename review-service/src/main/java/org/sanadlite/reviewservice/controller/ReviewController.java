@@ -4,6 +4,7 @@ import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
+import org.sanadlite.reviewservice.dto.ReviewRequestDto;
 import org.sanadlite.reviewservice.model.Review;
 import org.sanadlite.reviewservice.service.ReviewService;
 
@@ -18,24 +19,17 @@ public class ReviewController {
 
     /**
      * Create a review
-     *
-     * @param courseId course id
-     * @param studentId student id
-     * @param rating rating
-     * @param review review
+     * @param reviewRequestDto review request dto
      * @return created review
      */
     @POST
     @Produces("application/json")
-    public Response createReview(@QueryParam("course_id") Long courseId,
-                                 @QueryParam("student_id")Long studentId,
-                                 @QueryParam("rating") Double rating,
-                                 @QueryParam("review") String review) {
-        Review reviewObj = new Review(courseId, studentId, rating, review);
+    public Response createReview(ReviewRequestDto reviewRequestDto) {
+
         try {
-            reviewService.createReview(reviewObj);
+            reviewService.createReview(reviewRequestDto);
             return Response.status(Response.Status.CREATED)
-                    .entity(reviewObj)
+                    .entity(reviewRequestDto)
                     .build();
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
@@ -56,7 +50,7 @@ public class ReviewController {
      */
     @GET
     @Produces("application/json")
-    public Response getReviewsByCourseId(@QueryParam("course_id") Long courseId) {
+    public Response getReviewsByCourseId(@QueryParam("courseId") Long courseId) {
         try {
             return Response.status(Response.Status.OK)
                     .entity(reviewService.getReviewsByCourseId(courseId))
@@ -80,7 +74,7 @@ public class ReviewController {
      */
     @DELETE
     @Produces("application/json")
-    public Response deleteReviewByCourseId(@QueryParam("course_id") Long courseId){
+    public Response deleteReviewByCourseId(@QueryParam("courseId") Long courseId){
         try {
             if (reviewService.deleteReviewByCourseId(courseId))
                 return Response.status(Response.Status.NO_CONTENT).build();
@@ -96,5 +90,20 @@ public class ReviewController {
                     .entity(exceptionAsString)
                     .build();
         }
+    }
+
+
+    @GET
+    @Path("/test")
+    @Produces("application/json")
+    public Response test(@QueryParam("courseId") Long courseId) {
+        if(courseId % 2 != 0) {
+            return Response.status(Response.Status.CREATED)
+                    .entity("course_id must be even")
+                    .build();
+        }
+        return Response.status(Response.Status.OK)
+                .entity("ok")
+                .build();
     }
 }

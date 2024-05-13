@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Query;
+import org.sanadlite.reviewservice.dto.ReviewRequestDto;
 import org.sanadlite.reviewservice.model.Review;
 
 import java.util.List;
@@ -14,7 +15,14 @@ public class ReviewService {
     @Inject
     private EntityManager entityManager;
 
-    public void createReview(Review review) {
+    public void createReview(ReviewRequestDto reviewRequestDto) {
+        Review review = new Review(
+                reviewRequestDto.getCourseId(),
+                reviewRequestDto.getStudentId(),
+                reviewRequestDto.getRating(),
+                reviewRequestDto.getReview()
+        );
+
         EntityTransaction transaction = entityManager.getTransaction();
 
         try {
