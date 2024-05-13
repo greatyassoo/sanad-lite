@@ -1,0 +1,71 @@
+Tables:
+    -admin(id, name, email, password)
+    -instructor(id, name, email, password, bio, affiliation, yrs of experience)
+    -student(id, name, email, password, bio, affiliation)
+    -Course(id, name, duration(date), category_id, instructor_id, description, rating, num of ratings, num of students, capacity, is_published)
+    -courseRequest(id, course_id, student_id, status)
+    -studentCourse(id, course_id, student_id, status)
+    -content(id, content_path, is_published)
+    -categories(id, name)
+    -reviews(id, course_id, student_id, rating, review)
+
+// features are: search, sortBy and pagination
+
+Services:
+    Admin-Service:
+        TABLES[admins]
+
+        login
+
+        get students
+        get instructors
+
+        add category
+        get categories
+        remove category
+        edit category
+
+        get courses
+        edit course (name, description and duration)
+        remove course (with cascade content)
+
+        view course content
+        publish content
+
+    Instructor-Service:
+        TABLES[instructors]
+        register
+        login
+
+        create course
+        get courses (with features)
+        get single course
+
+        get course reviews
+
+        accept course request
+        reject course request
+
+    Student-Service:
+        TABLES[students]
+
+        register
+        login
+
+        get student courses (current and past)
+        get all courses (with features)
+        get single course
+
+        get course reviews
+        get course content
+
+        make course request
+        cancel course request
+
+        add course review
+
+        get course request updates notification
+        (for now RabbitMQ - for later simple table)
+
+    Course-Service:
+        TABLES[course, content, reviews, course_request, student_courses,categories]
