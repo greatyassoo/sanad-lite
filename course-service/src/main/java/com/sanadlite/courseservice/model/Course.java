@@ -16,7 +16,8 @@ import java.util.Date;
 @Table(name = "courses")
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "courses_id_seq")
+    @SequenceGenerator(name = "courses_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "courses_seq")
     private Long id;
 
     private String name;
@@ -25,24 +26,20 @@ public class Course {
 
     private String category;
 
-    private Double rating;
+    private Double rating = 0.0;
 
     @Column(name = "ratings_count")
-    private Integer ratingsCount;
+    private Integer ratingsCount = 0;
 
     @Column(name = "enrollments_number")
-    private Integer enrollmentsNumber;
+    private Integer enrollmentsNumber = 0;
 
     @Column(name = "max_capacity")
     private Integer maxCapacity;
-
-    @Column(name = "is_published")
-    private Boolean isPublished = false;
 
     @Column(name = "end_date")
     private Date endDate;
 
     @Column(name = "instructor_id")
     private Long instructorId;
-
 }
