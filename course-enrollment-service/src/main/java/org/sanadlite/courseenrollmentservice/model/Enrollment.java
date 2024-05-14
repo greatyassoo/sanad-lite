@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @Entity
 public class Enrollment {
@@ -24,4 +23,8 @@ public class Enrollment {
     private String studentUUID;
 
     private Boolean status;
+
+    public Enrollment() {
+        this.status = false;
+    }
 }
