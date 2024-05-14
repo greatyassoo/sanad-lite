@@ -32,7 +32,7 @@ public class CourseService {
     private final ModelMapper modelMapper;
     private final ReviewInterface reviewInterface;
 
-    public Page<Course> getAll(String search, Long instructorId, Pageable pageable) {
+    public Page<Course> getAll(String search, String instructorId, Pageable pageable) {
         return courseRepository.findCoursesCustom(instructorId, search, pageable);
     }
 
@@ -71,11 +71,10 @@ public class CourseService {
         return null;
     }
 
-    public Page<ReviewResponseDto> getAllCourseReviews(Long courseId, Pageable pageable) {
+    public List<ReviewResponseDto> getAllCourseReviews(Long courseId, Pageable pageable) {
         Course course = courseRepository.findById(courseId).orElse(null);
         if(course != null){
-            List<ReviewResponseDto> reviewList = reviewInterface.getReviewsByCourseId(courseId).getBody();
-            return new PageImpl<>(reviewList, pageable, reviewList.size());
+            return reviewInterface.getReviewsByCourseId(courseId).getBody();
         }
         return null;
     }

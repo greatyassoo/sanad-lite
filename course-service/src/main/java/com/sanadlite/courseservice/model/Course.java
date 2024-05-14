@@ -43,7 +43,7 @@ public class Course {
     private Date endDate;
 
     @Column(name = "instructor_id")
-    private Long instructorId;
+    private String instructorId;
 
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference

@@ -33,5 +33,5 @@ public class CourseReqDto {
     @Future(message = "endDate must be in the future")
     private Date endDate;
 
-    private Long instructorId;
+    private String instructorId;
 }

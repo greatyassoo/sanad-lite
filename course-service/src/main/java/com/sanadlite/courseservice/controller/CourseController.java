@@ -40,7 +40,7 @@ public class CourseController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortField,
             @RequestParam(defaultValue = "asc") String sortOrder,
-            @RequestParam(required = false) Long instructorId
+            @RequestParam(required = false) String instructorId
     ) {
         Sort sort = Sort.by(sortField);
         if (sortOrder.equalsIgnoreCase("desc")) {
@@ -77,9 +77,9 @@ public class CourseController {
     //  REVIEWS APIS
 
     @GetMapping("{courseId}/reviews")
-    public ResponseEntity<Page<ReviewResponseDto>> getReviewsByCourseId(@PathVariable(name = "courseId") Long courseId, Pageable pageable) {
+    public ResponseEntity<List<ReviewResponseDto>> getReviewsByCourseId(@PathVariable(name = "courseId") Long courseId, Pageable pageable) {
         log.info(pageable.toString());
-        Page<ReviewResponseDto> reviewResponseDto = courseService.getAllCourseReviews(courseId, pageable);
+        List<ReviewResponseDto> reviewResponseDto = courseService.getAllCourseReviews(courseId, pageable);
         if(reviewResponseDto == null) return ResponseEntity.notFound().build();
         return new ResponseEntity<>(reviewResponseDto, HttpStatus.OK);
     }

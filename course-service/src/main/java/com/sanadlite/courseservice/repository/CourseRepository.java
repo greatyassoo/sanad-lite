@@ -13,6 +13,6 @@ public interface CourseRepository extends JpaRepository<Course,Long> {
     @Query("SELECT c FROM Course c " +
             "WHERE (:instructorId IS NULL OR c.instructorId = :instructorId) " +
             "AND (LOWER(c.name) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(c.description) LIKE LOWER(CONCAT('%', :search, '%')))")
-    Page<Course> findCoursesCustom(@Param("instructorId") Long instructorId, @Param("search") String search, Pageable pageable);
-    Page<Course> findByInstructorIdOrNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(Long instructorId, String name, String description, Pageable pageable);
+    Page<Course> findCoursesCustom(@Param("instructorId") String instructorId, @Param("search") String search, Pageable pageable);
+    Page<Course> findByInstructorIdOrNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String instructorId, String name, String description, Pageable pageable);
 }

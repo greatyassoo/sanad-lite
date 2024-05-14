@@ -30,5 +30,5 @@ public class CourseResDto {
 
     private Date endDate;
 
-    private Long instructorId;
+    private String instructorId;
 }

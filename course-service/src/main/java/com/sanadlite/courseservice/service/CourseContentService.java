@@ -24,9 +24,6 @@ public class CourseContentService {
     private final CourseRepository courseRepository;
     private final ModelMapper modelMapper;
 
-    public String xxx(){
-        return "asd";
-    }
     public CourseContentResDto addContentToCourse(Long courseId, CourseContentDto courseContentDto) {
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course != null){
