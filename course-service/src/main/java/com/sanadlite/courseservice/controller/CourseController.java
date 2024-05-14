@@ -2,6 +2,7 @@ package com.sanadlite.courseservice.controller;
 
 import com.sanadlite.courseservice.dto.request.CourseReqDto;
 import com.sanadlite.courseservice.dto.request.CourseUpdateReqDto;
+import com.sanadlite.courseservice.dto.response.CourseContentResDto;
 import com.sanadlite.courseservice.dto.response.CourseResDto;
 import com.sanadlite.courseservice.feign.reviewservice.dto.ReviewRequestDto;
 import com.sanadlite.courseservice.feign.reviewservice.dto.ReviewResponseDto;
@@ -73,10 +74,20 @@ public class CourseController {
         else return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("{courseId}/reviews")
-    public ResponseEntity<List<ReviewResponseDto>> getReviewsByCourseId(@PathVariable(name = "courseId") Long courseId) {
-        return reviewInterface.getReviewsByCourseId(courseId);
+    //  REVIEWS APIS
 
+    @GetMapping("{courseId}/reviews")
+    public ResponseEntity<Page<ReviewResponseDto>> getReviewsByCourseId(@PathVariable(name = "courseId") Long courseId, Pageable pageable) {
+        log.info(pageable.toString());
+        Page<ReviewResponseDto> reviewResponseDto = courseService.getAllCourseReviews(courseId, pageable);
+        if(reviewResponseDto == null) return ResponseEntity.notFound().build();
+        return new ResponseEntity<>(reviewResponseDto, HttpStatus.OK);
     }
 
+    @PostMapping("reviews")
+    public ResponseEntity<ReviewResponseDto> addReviewToCourse(@RequestBody ReviewRequestDto reviewRequestDto) {
+        ReviewResponseDto reviewResponseDto = courseService.createReviewToCourse(reviewRequestDto.getCourseId(), reviewRequestDto);
+        if(reviewResponseDto == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(reviewResponseDto);
+    }
 }
