@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReviewRequestDto {
     private Long courseId;
-    private Long studentId;
+    private String studentUUID;
     private Double rating;
     private String review;
 }

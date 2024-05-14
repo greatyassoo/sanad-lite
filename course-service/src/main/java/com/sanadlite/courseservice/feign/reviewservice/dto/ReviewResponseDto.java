@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class ReviewResponseDto {
     private Long id;
     private Long courseId;
-    private Long studentId;
+    private String studentUUID;
     private Double rating;
     private String review;
 }

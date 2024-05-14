@@ -18,7 +18,7 @@ public class ReviewService {
     public Review createReview(ReviewRequestDto reviewRequestDto) {
         Review review = new Review(
                 reviewRequestDto.getCourseId(),
-                reviewRequestDto.getStudentId(),
+                reviewRequestDto.getStudentUUID(),
                 reviewRequestDto.getRating(),
                 reviewRequestDto.getReview()
         );

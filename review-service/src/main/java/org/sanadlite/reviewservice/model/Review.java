@@ -15,22 +15,22 @@ public class Review {
     private Long id;
     @Column(name = "course_id")
     private Long courseId;
-    @Column(name = "student_id")
-    private Long studentId;
+    @Column(name = "student_uuid")
+    private String studentUUID;
     private Double rating;
     private String review;
 
-    public Review(Long id, Long courseId, Long studentId, Double rating, String review) {
+    public Review(Long id, Long courseId, String studentUUID, Double rating, String review) {
         this.id = id;
         this.courseId = courseId;
-        this.studentId = studentId;
+        this.studentUUID = studentUUID;
         this.rating = rating;
         this.review = review;
     }
 
-    public Review(Long courseId, Long studentId, Double rating, String review) {
+    public Review(Long courseId, String studentUUID, Double rating, String review) {
         this.courseId = courseId;
-        this.studentId = studentId;
+        this.studentUUID = studentUUID;
         this.rating = rating;
         this.review = review;
     }
@@ -53,12 +53,12 @@ public class Review {
         this.courseId = courseId;
     }
 
-    public Long getStudentId() {
-        return studentId;
+    public String getStudentUUID() {
+        return studentUUID;
     }
 
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
+    public void setStudentUUID(String studentId) {
+        this.studentUUID = studentId;
     }
 
     public Double getRating() {
@@ -82,7 +82,7 @@ public class Review {
         return "Review{" +
                 "id=" + id +
                 ", courseId=" + courseId +
-                ", studentId=" + studentId +
+                ", studentId=" + studentUUID +
                 ", rating=" + rating +
                 ", review='" + review + '\'' +
                 '}';

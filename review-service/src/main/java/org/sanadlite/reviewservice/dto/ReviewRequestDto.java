@@ -2,16 +2,16 @@ package org.sanadlite.reviewservice.dto;
 
 public class ReviewRequestDto {
     private Long courseId;
-    private Long studentId;
+    private String studentUUID;
     private Double rating;
     private String review;
 
     public ReviewRequestDto() {
     }
 
-    public ReviewRequestDto(Long courseId, Long studentId, Double rating, String review) {
+    public ReviewRequestDto(Long courseId, String studentUUID, Double rating, String review) {
         this.courseId = courseId;
-        this.studentId = studentId;
+        this.studentUUID = studentUUID;
         this.rating = rating;
         this.review = review;
     }
@@ -24,12 +24,12 @@ public class ReviewRequestDto {
         this.courseId = courseId;
     }
 
-    public Long getStudentId() {
-        return studentId;
+    public String getStudentUUID() {
+        return studentUUID;
     }
 
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
+    public void setStudentUUID(String studentUUID) {
+        this.studentUUID = studentUUID;
     }
 
     public Double getRating() {
