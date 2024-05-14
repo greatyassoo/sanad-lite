@@ -33,3 +33,35 @@ build/
 .vscode/
 
 .class
+# Dependency directories
+node_modules/
+yarn-error.log
+yarn.lock
+
+# Build files
+/build/
+/dist/
+
+# Environment variables
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs and test databases
+logs/
+*.log
+*.log.*
+*.tmp
+*.pid
+*.seed
+*.pid.lock
+
+# Yarn Integrity file
+.yarn/*
+!/.yarn/patches
+!/.yarn/releases
+!/.yarn/plugins
+!/.yarn/sdks
+!/.yarn/versions
