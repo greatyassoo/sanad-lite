@@ -14,4 +14,4 @@
 
 3. **User Service:**
    - application port: 8383
-   - database port: MONGODB PORT
+   - database port: 27018
