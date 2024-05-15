@@ -23,9 +23,7 @@ public class EnrollmentService {
     private CourseInterface courseInterface;
     private ModelMapper modelMapper;
 
-    public Page<Enrollment> getByStudentId(String studentUUID, Pageable pageable) {
-        return enrollmentRepository.findByStudentUUID(studentUUID, pageable);
-    }
+
 
     public Enrollment addEnrollment(EnrollmentRequestDto enrollmentRequestDto) {
         ResponseEntity<CourseResponseDto> courseResponse = courseInterface.getCourseById(enrollmentRequestDto.getCourseId());
@@ -61,5 +59,17 @@ public class EnrollmentService {
 
         enrollmentRepository.deleteById(enrollment.get().getId());
         return 1;
+    }
+
+    public Enrollment switchEnrollmentStatus(Long enrollmentId) {
+        var enrollment = enrollmentRepository.findById(enrollmentId);
+        if (enrollment.isEmpty())
+            return null;
+        enrollment.get().setStatus(!enrollment.get().getStatus());
+        return enrollmentRepository.save(enrollment.get());
+    }
+
+    public Page<Enrollment> enrollmentSearch(Long courseId, String studentUUID, Boolean status, Pageable pageable) {
+        return enrollmentRepository.search(courseId, studentUUID, status, pageable);
     }
 }
