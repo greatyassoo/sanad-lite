@@ -21,15 +21,13 @@ import org.springframework.web.bind.annotation.*;
 public class EnrollmentController {
     private EnrollmentService enrollmentService;
 
-    /**
-     *
-     * @param studentUUID student id
-     * @param pageable page number and size
-     * @return list of enrollments
-     */
-    @GetMapping
-    public ResponseEntity<Page<Enrollment>> getStudentEnrollments(String studentUUID, Pageable pageable){
-        return ResponseEntity.ok(enrollmentService.getByStudentId(studentUUID, pageable));
+    @GetMapping()
+    public ResponseEntity<Page<Enrollment>> getEnrollments(@RequestParam(required = false) Long courseId,
+                                                           @RequestParam(required = false) String studentUUID,
+                                                           @RequestParam(required = false) Boolean status,
+                                                           Pageable pageable){
+        return ResponseEntity.ok(enrollmentService.enrollmentSearch(courseId, studentUUID, status, pageable));
+
     }
 
     /**
@@ -45,6 +43,17 @@ public class EnrollmentController {
         }
         return ResponseEntity.ok(enrollment);
     }
+
+    //TODO: test
+    @PatchMapping("{enrollmentId}")
+    public ResponseEntity<Enrollment> updateEnrollment(@PathVariable("enrollmentId") Long enrollmentId){
+        Enrollment enrollment = enrollmentService.switchEnrollmentStatus(enrollmentId);
+        if (enrollment == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(enrollment);
+    }
+
     /**
      *
      * @param enrollmentRequestDto enrollment request
