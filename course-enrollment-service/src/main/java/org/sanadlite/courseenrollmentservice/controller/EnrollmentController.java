@@ -9,6 +9,7 @@ import org.sanadlite.courseenrollmentservice.model.Enrollment;
 import org.sanadlite.courseenrollmentservice.service.EnrollmentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +44,18 @@ public class EnrollmentController {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(enrollment);
+    }
+    /**
+     *
+     * @param enrollmentRequestDto enrollment request
+     * @return no content if enrollment deleted, not found if enrollment not found, forbidden if enrollment already accepted
+     */
+    @DeleteMapping
+    public ResponseEntity<Object> deleteEnrollment(@RequestBody EnrollmentRequestDto enrollmentRequestDto){
+        if(enrollmentService.cancelEnrollment(enrollmentRequestDto) == -1)
+            return ResponseEntity.notFound().build();
+        if(enrollmentService.cancelEnrollment(enrollmentRequestDto) == 0)
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Cannot delete already enrolled in course");
+        return ResponseEntity.noContent().build();
     }
 }
