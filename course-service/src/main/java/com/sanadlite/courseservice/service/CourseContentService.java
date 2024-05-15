@@ -49,4 +49,12 @@ public class CourseContentService {
                     new CourseContentResDto(courseContent.getId(), courseContent.getTitle(), courseContent.getPath(), courseContent.getIsPublished()));
         }else return null;
     }
+    public CourseContentResDto publishContent(Long contentId){
+        CourseContent courseContent = courseContentRepository.findById(contentId).orElse(null);
+        if(courseContent != null){
+            courseContent.setIsPublished(true);
+            courseContent = courseContentRepository.save(courseContent);
+        }
+        return modelMapper.map(courseContent, CourseContentResDto.class);
+    }
 }

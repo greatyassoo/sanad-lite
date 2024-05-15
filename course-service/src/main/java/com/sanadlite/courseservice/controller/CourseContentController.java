@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @AllArgsConstructor
 @Log
-@RequestMapping("/api/v1/courses")
+@RequestMapping("/api/v1")
 public class CourseContentController {
     private final CourseContentService courseContentService;
 
-    @PostMapping("/{courseId}/content")
+    @PostMapping("/courses/{courseId}/content")
     public ResponseEntity<CourseContentResDto> addContent(
             @PathVariable Long courseId,
             @RequestBody CourseContentDto courseContentDto) {
@@ -27,7 +27,7 @@ public class CourseContentController {
         return  new ResponseEntity<>(CourseContentResDto, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{courseId}/content")
+    @GetMapping("/courses/{courseId}/content")
     public ResponseEntity<Page<CourseContentResDto>> getAllCourseContents(
             @PathVariable Long courseId,
             @RequestParam(defaultValue = "") String search,
@@ -38,5 +38,12 @@ public class CourseContentController {
                 courseContentService.getCourseContent(courseId, search, isPublished,  pageable);
         if(courseContentResDto == null) return ResponseEntity.notFound().build();
         return new ResponseEntity<>(courseContentResDto, HttpStatus.OK);
+    }
+
+    @PatchMapping("content/{contentId}/publish")
+    public ResponseEntity<CourseContentResDto> publishContent(@PathVariable Long contentId) {
+        CourseContentResDto courseContentResDto = courseContentService.publishContent(contentId);
+        if(courseContentResDto == null) return ResponseEntity.notFound().build();
+        return  new ResponseEntity<>(courseContentResDto, HttpStatus.OK);
     }
 }

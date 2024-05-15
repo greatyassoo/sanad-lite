@@ -9,6 +9,12 @@ const version = 'api/v1';
 
 router.post(`/${version}/auth/register`, UserController.register);
 router.post(`/${version}/auth/login`, UserController.login);
+router.get(
+	`/${version}/users`,
+	protect,
+	restrictTo(Roles.ADMIN),
+	UserController.getAllUsers
+);
 
 // courses service
 router.get(

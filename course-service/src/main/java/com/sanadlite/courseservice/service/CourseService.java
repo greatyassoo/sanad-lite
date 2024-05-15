@@ -50,6 +50,7 @@ public class CourseService {
         Optional<Course> course = courseRepository.findById(id);
         if(course.isPresent()){
             courseRepository.deleteById(id);
+            reviewInterface.deleteReviewByCourseId(id);
             return true;
         } else return false;
     }
@@ -66,6 +67,13 @@ public class CourseService {
     public ReviewResponseDto createReviewToCourse(Long courseId, ReviewRequestDto reviewRequestDto){
         Course course = courseRepository.findById(courseId).orElse(null);
         if(course != null){
+            // Update rating logic
+            double totalRating = course.getRating() * course.getRatingsCount();
+            double newRating = (totalRating + reviewRequestDto.getRating()) / (course.getRatingsCount() + 1);
+            // Update course entity
+            course.setRating(newRating);
+            course.setRatingsCount(course.getRatingsCount() + 1);
+            courseRepository.save(course);
             return reviewInterface.createReview(reviewRequestDto).getBody();
         }
         return null;

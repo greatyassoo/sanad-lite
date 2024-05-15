@@ -4,6 +4,8 @@ import { StatusCodes } from 'http-status-codes';
 import { signJWT } from '../utils/auth.js';
 import bcrypt from 'bcrypt';
 import { filterObject } from '../utils/helpers.js';
+import { AggregateFeatures } from '../utils/AggregateFeatures.js';
+import { findAllAggregate } from '../utils/fatcory.js';
 
 export const register = catchAsyncError(async (req, res, next) => {
 	const chckUser = await USER.findOne({ email: req.body.email });
@@ -27,4 +29,8 @@ export const login = catchAsyncError(async (req, res, next) => {
 	const userObj = filterObject({ ...chckUser.toObject() }, ['password']);
 	const token = signJWT({ _id: chckUser['_id'], role: chckUser.role });
 	return res.status(StatusCodes.OK).json({ token: token, data: userObj });
+});
+
+export const getAllUsers = catchAsyncError(async (req, res) => {
+	findAllAggregate(USER, [], req.query, ['name'], res);
 });
