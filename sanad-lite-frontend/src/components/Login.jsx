@@ -1,4 +1,3 @@
-import { Listbox } from '@headlessui/react';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
@@ -7,6 +6,26 @@ import { useNavigate } from 'react-router-dom';
 export default function Login() {
 	const [errorFlag, setErrorFlag] = useState(false);
 	const redirectTo = useNavigate();
+	// const test = async () => {
+	// 	console.log('asfas');
+	// 	const response = await axios.post(
+	// 		'http://localhost:8383/api/v1/courses/reviews',
+	// 		{
+	// 			courseId: 5,
+	// 			studentUUID: 'instructorId',
+	// 			rating: 2.1,
+	// 			review: 'Fuck this course',
+	// 		},
+	// 		{
+	// 			headers: {
+	// 				authorization:
+	// 					'Bearer ' +
+	// 					'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjQ3NjFiZjA1ZDA4NWYxOTI2YTU0ODgiLCJyb2xlIjoic3R1ZGVudCIsImlhdCI6MTcxNTk1OTA3OTIxNCwiZXhwIjoxNzE1OTY2ODU1MjE0fQ.LrT1ATiR9bibngLa3zitU2FNhud9JOXYW08h3fYw9co',
+	// 			},
+	// 		}
+	// 	);
+	// 	console.log(response);
+	// };
 	const formik = useFormik({
 		initialValues: {},
 		onSubmit: async (values) => {

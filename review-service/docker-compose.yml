@@ -6,15 +6,9 @@ services:
     build: .
     container_name: review-service-jakartaee
     ports:
-      - "8181:8181"
+      - "8181:8080"
     depends_on:
       - review-service-db
-    environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_NAME=your_database
-      - DB_USER=your_user
-      - DB_PASSWORD=your_password
 
   review-service-db:
     image: postgres
