@@ -4,9 +4,8 @@ import { StatusCodes } from 'http-status-codes';
 import { signJWT } from '../utils/auth.js';
 import bcrypt from 'bcrypt';
 import { filterObject } from '../utils/helpers.js';
-import { AggregateFeatures } from '../utils/AggregateFeatures.js';
 import { findAllAggregate } from '../utils/fatcory.js';
-
+import { Types } from 'mongoose';
 export const register = catchAsyncError(async (req, res, next) => {
 	const chckUser = await USER.findOne({ email: req.body.email });
 	if (chckUser)
@@ -34,3 +33,9 @@ export const login = catchAsyncError(async (req, res, next) => {
 export const getAllUsers = catchAsyncError(async (req, res) => {
 	findAllAggregate(USER, [], req.query, ['name'], res);
 });
+export const getUserById = catchAsyncError(async (req, res) => {
+	const user = await USER.findById(req.params.userId);
+    if (!user)
+        return next(new ApiError(StatusCodes.NOT_FOUND, 'user not found'));
+    return res.status(StatusCodes.OK).json(user);
+})

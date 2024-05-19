@@ -2,6 +2,14 @@
 version: '3.9'
 
 services:
+  enrollment-service-spring:
+    build: .
+    container_name: enrollment-service-spring
+    ports:
+      - "8282:8282"
+    depends_on:
+      - enrollment-service-db
+
 
   enrollment-service-db:
     image: postgres

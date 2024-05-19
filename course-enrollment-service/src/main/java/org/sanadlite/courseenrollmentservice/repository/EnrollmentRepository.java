@@ -17,8 +17,9 @@ import java.util.Optional;
 public interface EnrollmentRepository extends CrudRepository<Enrollment, Long>,
         PagingAndSortingRepository<Enrollment, Long>, ListPagingAndSortingRepository<Enrollment, Long> {
     Optional<Enrollment> findByCourseIdAndAndStudentUUID(Long courseId, String studentUUID);
+
     @Query("SELECT e FROM Enrollment e WHERE (:courseId IS NULL OR e.courseId = :courseId) " +
             "AND (:studentUUID IS NULL OR e.studentUUID = :studentUUID) " +
             "AND (:status IS NULL OR e.status = :status)")
-    Page<Enrollment> search(Long courseId, String studentUUID, Boolean status, Pageable pageable);
+    Page<Enrollment> search(Long courseId, String studentUUID, Integer status, Pageable pageable);
 }

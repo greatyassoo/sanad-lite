@@ -1,14 +1,14 @@
 import express from 'express';
 import { config } from 'dotenv';
-import connectDb from './config/connectDb.js';
-import userModel from './models/user.model.js';
-import { logger } from './utils/logger/logger.js';
+import connectDb from './src/config/connectDb.js';
+import userModel from './src/models/user.model.js';
+import { logger } from './src/utils/logger/logger.js';
 import {
 	errorMiddlware,
 	configurationMiddlware,
 	routersMiddleware,
-} from './utils/appMiddleware.js';
-import { kafkConsumer } from './config/kafka.js';
+} from './src/utils/appMiddleware.js';
+import { kafkConsumer } from './src/config/kafka.js';
 // config .env file in server
 config();
 
@@ -24,21 +24,18 @@ const x = async () => {
 		});
 		await kafkConsumer.run({
 			eachMessage: async ({ topic, partition, message }) => {
-				// console.log({
-				// 	topic,
-				// 	partition,
-				// 	offset: message.offset,
-				// 	value: message.value.toString(),
-				// });
-				console.log(message.value.toString())
-				// Process the received message here
+				console.log(message.value.toString());
 			},
 		});
 	} catch (err) {
 		console.error(err);
 	}
 };
-x();
+x()
+app.get('/', (req, res) => {
+	return res.send('200');
+});
+
 // run server on port
 app.listen(port, () => {
 	logger.info(`🔥 Server listening on ${port}`);

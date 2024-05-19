@@ -22,9 +22,9 @@ public class Enrollment {
     @Column(name = "student_uuid")
     private String studentUUID;
 
-    private Boolean status;
+    private Integer status;
 
     public Enrollment() {
-        this.status = false;
+        this.status = -1;
     }
 }

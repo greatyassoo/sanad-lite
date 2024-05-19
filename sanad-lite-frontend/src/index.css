@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+ * {
+   font-family: 'Cairo', sans-serif;
+ }
+ 
+body {
+  margin: 0;
+  padding:0;
+  /* font-style: none; */
+}

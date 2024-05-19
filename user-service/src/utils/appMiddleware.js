@@ -1,3 +1,4 @@
+import express from 'express';
 import cookieParser from 'cookie-parser';
 import { globalErrorHandler, invalidRoutes } from './errorHandling.js';
 import hpp from 'hpp';
@@ -9,7 +10,8 @@ import compression from 'compression';
 import { loggerMiddlware } from './logger/logger.middleware.js';
 import rateLimit from 'express-rate-limit';
 import UserRouter from '../routes/user.route.js';
-import express from 'express';
+import CousreRouter from '../routes/course.route.js';
+import EnrollmentRouter from '../routes/enrollment.route.js';
 
 export const errorMiddlware = (app) => {
 	app.all('*', invalidRoutes);
@@ -28,7 +30,7 @@ const apiLimiter = rateLimit({
 export const configurationMiddlware = (app) => {
 	// body parser
 	app.use(express.json({ limit: '10kb' }));
-	app.use('/api', apiLimiter);
+	// app.use('/api', apiLimiter);
 	app.use(compression());
 	app.use(helmet());
 	app.use(cors());
@@ -48,4 +50,6 @@ export const configurationMiddlware = (app) => {
 
 export const routersMiddleware = (app) => {
 	app.use(UserRouter);
+	app.use(CousreRouter);
+	app.use(EnrollmentRouter);
 };
