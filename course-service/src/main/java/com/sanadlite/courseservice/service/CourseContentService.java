@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Log
 @Service
@@ -50,11 +51,12 @@ public class CourseContentService {
         }else return null;
     }
     public CourseContentResDto publishContent(Long contentId){
-        CourseContent courseContent = courseContentRepository.findById(contentId).orElse(null);
-        if(courseContent != null){
-            courseContent.setIsPublished(true);
-            courseContent = courseContentRepository.save(courseContent);
-        }
-        return modelMapper.map(courseContent, CourseContentResDto.class);
+        Optional<CourseContent> courseContent = courseContentRepository.findById(contentId);
+        if(courseContent.isPresent()){
+            CourseContent courseContent1 = courseContent.get();
+            courseContent1.setIsPublished(true);
+            courseContent1 = courseContentRepository.save(courseContent1);
+            return modelMapper.map(courseContent1, CourseContentResDto.class);
+        } else return null;
     }
 }

@@ -3,10 +3,27 @@ version: '3.9'
 
 services:
 
-  enrollment-service-db:
+  course-enrollment-service:
+    build: .
+    ports:
+      - "8282:8282"
+    depends_on:
+      - course-enrollment-db
+    networks:
+      - course-enrollment-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://course-enrollment-db:5432/postgres
+
+  course-enrollment-db:
     image: postgres
     restart: always
     environment:
       POSTGRES_PASSWORD: example
     ports:
       - "5435:5432"
+    networks:
+      - course-enrollment-network
+
+networks:
+  course-enrollment-network:
+    driver: bridge

@@ -24,7 +24,7 @@ public class EnrollmentController {
     @GetMapping()
     public ResponseEntity<Page<Enrollment>> getEnrollments(@RequestParam(required = false) Long courseId,
                                                            @RequestParam(required = false) String studentUUID,
-                                                           @RequestParam(required = false) Boolean status,
+                                                           @RequestParam(required = false) Integer status,
                                                            Pageable pageable){
         return ResponseEntity.ok(enrollmentService.enrollmentSearch(courseId, studentUUID, status, pageable));
 
@@ -44,27 +44,17 @@ public class EnrollmentController {
         return ResponseEntity.ok(enrollment);
     }
 
-    //TODO: test
-    @PatchMapping("{enrollmentId}")
-    public ResponseEntity<Enrollment> updateEnrollment(@PathVariable("enrollmentId") Long enrollmentId){
-        Enrollment enrollment = enrollmentService.switchEnrollmentStatus(enrollmentId);
-        if (enrollment == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(enrollment);
+    @PatchMapping("{enrollmentId}/accept")
+    public ResponseEntity<Object> acceptCourseEnrollment(@PathVariable Long enrollmentId){
+        if(enrollmentService.acceptEnrollment(enrollmentId))
+            return ResponseEntity.ok().build();
+        else return ResponseEntity.badRequest().build();
     }
 
-    /**
-     *
-     * @param enrollmentRequestDto enrollment request
-     * @return no content if enrollment deleted, not found if enrollment not found, forbidden if enrollment already accepted
-     */
-    @DeleteMapping
-    public ResponseEntity<Object> deleteEnrollment(@RequestBody EnrollmentRequestDto enrollmentRequestDto){
-        if(enrollmentService.cancelEnrollment(enrollmentRequestDto) == -1)
-            return ResponseEntity.notFound().build();
-        if(enrollmentService.cancelEnrollment(enrollmentRequestDto) == 0)
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Cannot delete already enrolled in course");
-        return ResponseEntity.noContent().build();
+    @PatchMapping("{enrollmentId}/reject")
+    public ResponseEntity<Object> rejectCourseEnrollment(@PathVariable Long enrollmentId){
+        if(enrollmentService.rejectEnrollment(enrollmentId))
+            return ResponseEntity.ok().build();
+        else return ResponseEntity.badRequest().build();
     }
 }

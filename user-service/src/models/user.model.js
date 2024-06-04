@@ -26,10 +26,6 @@ const userSchema = Schema({
     bio:{
         type: String,
     },
-	coursesCount:{
-		type: Number,
-        default: 0,
-	}
 });
 
 export default model('user', userSchema);

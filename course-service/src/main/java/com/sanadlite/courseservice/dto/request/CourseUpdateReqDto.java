@@ -19,4 +19,6 @@ public class CourseUpdateReqDto {
     private String description;
 
     private String category;
+
+    private Integer enrollmentsNumber;
 }

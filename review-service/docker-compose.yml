@@ -2,6 +2,15 @@
 version: '3.9'
 
 services:
+  review-service:
+    build: .
+    container_name: review-service-jakartaee
+    ports:
+      - "8181:8080"
+    depends_on:
+      - review-service-db
+    networks:
+      - review-network
 
   review-service-db:
     image: postgres
@@ -10,3 +19,9 @@ services:
       POSTGRES_PASSWORD: example
     ports:
       - "5434:5432"
+    networks:
+      - review-network
+
+networks:
+  review-network:
+    driver: bridge

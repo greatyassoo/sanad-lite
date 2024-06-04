@@ -1,0 +1,172 @@
+version: '3.9'
+
+services:
+
+  # Review Service
+  review-service:
+    build: ./review-service
+    ports:
+      - "8181:8080"
+    depends_on:
+      - review-service-db
+    networks:
+      - review-network
+      - course-review-network
+
+  review-service-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5434:5432"
+    networks:
+      - review-network
+
+
+
+
+  # Course Service
+  course-service:
+    build: ./course-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - course-service-db
+    networks:
+      - course-network
+      - course-review-network
+      - course-enrollment-course-network
+      - user-course-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://course-service-db:5432/postgres
+      REVIEW_SERVICE_URL:  http://review-service:8080/review_service_war_exploded/api/v1/reviews
+
+  course-service-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5433:5432"
+    networks:
+      - course-network
+
+
+
+
+  # Course-Enrollment Service
+  course-enrollment-service:
+    build: ./course-enrollment-service
+    ports:
+      - "8282:8282"
+    depends_on:
+      - course-enrollment-db
+    networks:
+      - course-enrollment-network
+      - course-enrollment-course-network
+      - course-enrollment-kafka-network
+      - user-course-enrollment-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://course-enrollment-db:5432/postgres
+      COURSE_SERVICE_URL: http://course-service:8080/api/v1/courses
+      SPRING_KAFKA_PRODUCER_BOOTSTRAP_SERVERS: kafka:9092
+
+  course-enrollment-db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5435:5432"
+    networks:
+      - course-enrollment-network
+
+
+  # User Service
+  user-service:
+    build: ./user-service
+    ports:
+      - '8383:8383'
+    environment:
+      PORT: 8383
+      NODE_ENV: development
+      MONGO_USER: root
+      MONGO_PASS: example
+      DB_URL: mongodb://user-service-db:27017
+      DB_NAME: sanadlite
+      JWT_SECRET_KEY: sanadlite
+      JWT_EXPIRES_IN: 90d
+      BCRYPT_SALT: 8
+      COURSE_SERVICE_PORT: 8080
+      ENROLLMENT_SERVICE_PORT: 8282
+      COURSE_SERVICE_URL: http://course-service:8080
+      ENROLLMENT_SERVICE_URL: http://course-enrollment-service:8282
+      KAFKA_BROKER: kafka:9092
+    networks:
+      - user-network
+      - user-course-network
+      - user-course-enrollment-network
+      - user-kafka-network
+      - user-frontend-network
+
+  user-service-db:
+    image: mongo
+    restart: always
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - user-network
+
+
+  # Frontend
+  frontend-service:
+    build: ./sanad-lite-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      REACT_APP_API_URL: http://user-service:8383
+    networks:
+      - user-frontend-network
+
+
+
+  # Kafka Message Broker
+  kafka:
+    image: apache/kafka:3.7.0
+    ports:
+      - "9092:9092"
+    networks:
+      - user-kafka-network
+      - course-enrollment-kafka-network
+#    environment:
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+
+networks:
+  review-network:
+    driver: bridge
+  course-network:
+    driver: bridge
+  course-enrollment-network:
+    driver: bridge
+  user-network:
+    driver: bridge
+
+
+  course-review-network:
+    driver: bridge
+  course-enrollment-course-network:
+    driver: bridge
+  user-course-network:
+    driver: bridge
+  user-course-enrollment-network:
+    driver: bridge
+  user-frontend-network:
+    driver: bridge
+  user-kafka-network:
+    driver: bridge
+  course-enrollment-kafka-network:
+    driver: bridge

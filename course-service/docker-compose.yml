@@ -3,10 +3,27 @@ version: '3.9'
 
 services:
 
-  db:
+  course-service:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - course-service-db
+    networks:
+      - course-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://course-service-db:5432/postgres
+
+  course-service-db:
     image: postgres
     restart: always
     environment:
       POSTGRES_PASSWORD: example
     ports:
       - "5433:5432"
+    networks:
+      - course-network
+
+networks:
+  course-network:
+    driver: bridge

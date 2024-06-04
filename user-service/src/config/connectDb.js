@@ -7,7 +7,8 @@ export default async () => {
 		const mongoPassword = process.env.MONGO_PASS;
 		const mongoPort = process.env.MONGO_PORT;
 		const dbName = process.env.DB_NAME;
-		await connect(`mongodb://localhost:${mongoPort}`, {
+		const dbUrl = process.env.DB_URL;
+		await connect(dbUrl, {
 			user: mongoUsername,
 			pass: mongoPassword,
 			dbName: dbName,
